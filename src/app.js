@@ -2,7 +2,7 @@ import express from 'express'
 
 import routes from './routes'
 
-class App {
+export class App {
   constructor () {
     this.server = express()
 
@@ -17,6 +17,8 @@ class App {
   routes () {
     this.server.use(routes)
   }
-}
 
-export default new App().server
+  start () {
+    this.server.listen(3000, console.log('Server started on port 3000'))
+  }
+}
