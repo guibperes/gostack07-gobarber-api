@@ -21,4 +21,9 @@ export class UserController {
       provider
     })
   }
+
+  async update (req, res) {
+    console.log(req.user)
+    return res.json({ ok: true })
+  }
 }
