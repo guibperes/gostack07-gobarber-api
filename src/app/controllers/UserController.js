@@ -10,10 +10,10 @@ export class UserController {
       password: Yup.string().required().min(6)
     })
 
-    if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({
-        message: 'Validation failed'
-      })
+    try {
+      await schema.validate(req.body)
+    } catch (error) {
+      return res.status(400).json(error)
     }
 
     const { email: emailSended } = req.body
@@ -52,10 +52,10 @@ export class UserController {
         )
     })
 
-    if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({
-        message: 'Validation failed'
-      })
+    try {
+      await schema.validate(req.body)
+    } catch (error) {
+      return res.status(400).json(error)
     }
 
     const { email, oldPassword, password } = req.body

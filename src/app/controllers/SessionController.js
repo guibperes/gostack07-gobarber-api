@@ -11,10 +11,10 @@ export class SessionController {
       password: Yup.string().required()
     })
 
-    if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({
-        message: 'Validation failed'
-      })
+    try {
+      await schema.validate(req.body)
+    } catch (error) {
+      return res.status(400).json(error)
     }
 
     const { email, password } = req.body
