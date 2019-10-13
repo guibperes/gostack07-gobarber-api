@@ -3,12 +3,14 @@ import Sequelize from 'sequelize'
 import dbConfig from '../config/database'
 import { User } from '../app/models/User'
 import { File } from '../app/models/File'
+import { Appointment } from '../app/models/Appointment'
 
 export class Database {
   constructor () {
     this.models = [
       User,
-      File
+      File,
+      Appointment
     ]
 
     this.init()
