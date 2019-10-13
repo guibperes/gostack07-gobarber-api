@@ -3,6 +3,7 @@ import { startOfHour, parseISO, isBefore } from 'date-fns'
 
 import { Appointment } from '../models/Appointment'
 import { User } from '../models/User'
+import { File } from '../models/File'
 
 export class AppointmentController {
   async store (req, res) {
@@ -54,5 +55,32 @@ export class AppointmentController {
     })
 
     return res.json(appointment)
+  }
+
+  async index (req, res) {
+    const appointments = await Appointment.findAll({
+      where: {
+        user_id: req.user,
+        canceled_at: null
+      },
+      attributes: ['id', 'date'],
+      order: ['date'],
+      include: [
+        {
+          model: User,
+          as: 'provider',
+          attributes: ['id', 'name'],
+          include: [
+            {
+              model: File,
+              as: 'avatar',
+              attributes: ['name', 'path', 'url']
+            }
+          ]
+        }
+      ]
+    })
+
+    return res.json(appointments)
   }
 }
