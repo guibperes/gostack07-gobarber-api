@@ -6,6 +6,7 @@ import { UserController } from './app/controllers/UserController'
 import { SessionController } from './app/controllers/SessionController'
 import { FileController } from './app/controllers/FileController'
 import { ProviderController } from './app/controllers/ProviderController'
+import { AppointmentController } from './app/controllers/AppointmentController'
 
 const routes = new Router()
 
@@ -13,6 +14,7 @@ const userController = new UserController()
 const sessionController = new SessionController()
 const fileController = new FileController()
 const providerController = new ProviderController()
+const appointmentController = new AppointmentController()
 
 // PUBLIC ROUTES
 routes.post('/users', userController.store)
@@ -23,5 +25,6 @@ routes.use(auth)
 routes.put('/users', userController.update)
 routes.post('/files', upload.single('file'), fileController.store)
 routes.get('/providers', providerController.index)
+routes.post('/appointments', appointmentController.store)
 
 export default routes
