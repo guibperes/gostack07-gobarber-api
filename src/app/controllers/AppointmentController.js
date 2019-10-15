@@ -1,6 +1,6 @@
 import * as Yup from 'yup'
 import { startOfHour, parseISO, isBefore, format } from 'date-fns'
-import { pt } from 'date-fns/locale'
+import { ptBR } from 'date-fns/locale'
 
 import { Appointment } from '../models/Appointment'
 import { User } from '../models/User'
@@ -21,6 +21,12 @@ export class AppointmentController {
     }
 
     const { provider_id, date } = req.body
+
+    if (req.user === provider_id) {
+      return res.status(400).json({
+        message: 'You cannot create a appointment with yourself'
+      })
+    }
 
     const isProvider = await User.findOne({
       where: { id: provider_id, provider: true }
@@ -58,10 +64,11 @@ export class AppointmentController {
 
     const user = await User.findByPk(req.user)
 
+    console.log(hourStart)
     const formattedDate = format(
       hourStart,
-      "'dia' dd 'de' MMMM, à's' H:mm'h'",
-      { locale: pt }
+      "'dia' dd 'de' MMMM, à's' HH:mm'h'",
+      { locale: ptBR }
     )
 
     await Notification.create({

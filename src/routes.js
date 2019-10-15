@@ -8,6 +8,7 @@ import { FileController } from './app/controllers/FileController'
 import { ProviderController } from './app/controllers/ProviderController'
 import { AppointmentController } from './app/controllers/AppointmentController'
 import { ScheduleController } from './app/controllers/ScheduleController'
+import { NotificationController } from './app/controllers/NotificationController'
 
 const routes = new Router()
 
@@ -17,6 +18,7 @@ const fileController = new FileController()
 const providerController = new ProviderController()
 const appointmentController = new AppointmentController()
 const scheduleController = new ScheduleController()
+const notificationController = new NotificationController()
 
 // PUBLIC ROUTES
 routes.post('/users', userController.store)
@@ -30,5 +32,6 @@ routes.get('/providers', providerController.index)
 routes.post('/appointments', appointmentController.store)
 routes.get('/appointments', appointmentController.index)
 routes.get('/schedules', scheduleController.index)
+routes.get('/notifications', notificationController.index)
 
 export default routes
