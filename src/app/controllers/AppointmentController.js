@@ -2,6 +2,7 @@ import * as Yup from 'yup'
 import { startOfHour, parseISO, isBefore, format, subHours } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 
+import Mail from '../../lib/Mail'
 import { Appointment } from '../models/Appointment'
 import { User } from '../models/User'
 import { File } from '../models/File'
@@ -111,7 +112,15 @@ export class AppointmentController {
 
   async delete (req, res) {
     const { id } = req.params
-    const appointment = await Appointment.findByPk(id)
+    const appointment = await Appointment.findByPk(id, {
+      include: [
+        {
+          model: User,
+          as: 'provider',
+          attributes: ['name', 'email']
+        }
+      ]
+    })
 
     if (appointment.user_id !== req.user) {
       return res.status(401).json({
@@ -130,6 +139,14 @@ export class AppointmentController {
     appointment.canceled_at = Date.now()
 
     await appointment.save()
+
+    const { name, email } = appointment.provider
+
+    await Mail.sendMail({
+      to: `${name} <${email}>`,
+      subject: 'Agendamento Cancelado',
+      text: 'Você tem um novo cancelamento'
+    })
 
     return res.json(appointment)
   }
