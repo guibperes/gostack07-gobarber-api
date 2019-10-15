@@ -1,6 +1,7 @@
 import { Router } from 'express'
 
 import { auth } from './middlewares/auth'
+import { notFounded } from './middlewares/notFounded'
 import { upload } from './config/storage'
 import { UserController } from './app/controllers/UserController'
 import { SessionController } from './app/controllers/SessionController'
@@ -27,11 +28,19 @@ routes.post('/sessions', sessionController.store)
 // PRIVATE ROUTES
 routes.use(auth)
 routes.put('/users', userController.update)
+
 routes.post('/files', upload.single('file'), fileController.store)
+
 routes.get('/providers', providerController.index)
+
 routes.post('/appointments', appointmentController.store)
 routes.get('/appointments', appointmentController.index)
+
 routes.get('/schedules', scheduleController.index)
+
 routes.get('/notifications', notificationController.index)
+routes.put('/notifications/:id', notificationController.update)
+
+routes.use('*', notFounded)
 
 export default routes
