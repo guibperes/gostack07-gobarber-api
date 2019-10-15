@@ -2,7 +2,7 @@ import * as Yup from 'yup'
 import { startOfHour, parseISO, isBefore, format, subHours } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 
-import Mail from '../../lib/Mail'
+import { Mail } from '../../lib/Mail'
 import { Appointment } from '../models/Appointment'
 import { User } from '../models/User'
 import { File } from '../models/File'
@@ -142,7 +142,9 @@ export class AppointmentController {
 
     const { name, email } = appointment.provider
 
-    await Mail.sendMail({
+    const mail = new Mail()
+
+    await mail.sendMail({
       to: `${name} <${email}>`,
       subject: 'Agendamento Cancelado',
       text: 'Você tem um novo cancelamento'

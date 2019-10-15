@@ -2,7 +2,7 @@ import nodemailer from 'nodemailer'
 
 import { MailConfig } from '../config/mail'
 
-class Mail {
+export class Mail {
   constructor () {
     const { host, port, secure, auth } = MailConfig
 
@@ -15,12 +15,9 @@ class Mail {
   }
 
   sendMail (message) {
-    console.log(message)
     return this.transporter.sendMail({
       ...MailConfig.default,
       ...message
     })
   }
 }
-
-export default new Mail()
