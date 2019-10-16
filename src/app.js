@@ -5,7 +5,7 @@ import morgan from 'morgan'
 import * as Sentry from '@sentry/node'
 import Youch from 'youch'
 
-import config from './config/env'
+import { IS_DEV, APP_PORT } from './config/env'
 import { SentryConfig } from './config/sentry'
 import { Database } from './database'
 import routes from './routes'
@@ -25,7 +25,7 @@ class App {
   middlewares () {
     this.server.use(Sentry.Handlers.requestHandler())
     this.server.use(express.json())
-    this.server.use(morgan('dev'))
+    this.server.use(morgan(IS_DEV ? 'dev' : 'common'))
     this.server.use(
       '/files',
       express.static(resolve(__dirname, '..', 'tmp', 'uploads'))
@@ -39,9 +39,15 @@ class App {
 
   exceptionHandler () {
     this.server.use(async (err, req, res, next) => {
-      const errors = await new Youch(err, req).toJSON()
+      if (IS_DEV) {
+        const errors = await new Youch(err, req).toJSON()
 
-      return res.status(500).json(errors)
+        return res.status(500).json(errors)
+      }
+
+      return res.status(500).json({
+        message: 'Internal server error'
+      })
     })
   }
 
@@ -56,9 +62,9 @@ class App {
   async start () {
     try {
       await new Database()
-      await this.server.listen(3000)
+      await this.server.listen(APP_PORT)
 
-      console.log('Server started on port 3000')
+      console.log(`Server started on port ${APP_PORT}`)
     } catch (error) {
       console.log(error)
       process.exit(1)

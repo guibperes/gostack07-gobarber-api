@@ -1,10 +1,12 @@
+import { MAIL_HOST, MAIL_PORT, MAIL_USER, MAIL_PASS } from './env'
+
 export const MailConfig = {
-  host: 'smtp.mailtrap.io',
-  port: '2525',
+  host: MAIL_HOST,
+  port: MAIL_PORT,
   secure: false,
   auth: {
-    user: '036300e7e56a39',
-    pass: 'a1b159cafe8d0a'
+    user: MAIL_USER,
+    pass: MAIL_PASS
   },
   default: {
     from: 'Equipe GoBarber <noreply@gobarber.com>'

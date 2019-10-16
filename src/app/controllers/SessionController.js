@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import * as Yup from 'yup'
 
-import { AUTH_SECRET, EXPIRES_IN } from '../../config/auth'
+import { AUTH_SECRET, AUTH_EXPIRES_IN } from '../../config/env'
 import { User } from '../models/User'
 
 class SessionController {
@@ -36,7 +36,7 @@ class SessionController {
     const { id, name } = user
 
     const token = jwt.sign({ id }, AUTH_SECRET, {
-      expiresIn: EXPIRES_IN
+      expiresIn: AUTH_EXPIRES_IN
     })
 
     return res.json({

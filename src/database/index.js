@@ -1,6 +1,7 @@
 import Sequelize from 'sequelize'
 import mongoose from 'mongoose'
 
+import { MONGO_URL } from '../config/env'
 import dbConfig from '../config/database'
 import { User } from '../app/models/User'
 import { File } from '../app/models/File'
@@ -28,7 +29,7 @@ export class Database {
 
   mongo () {
     this.mongoConnection = mongoose.connect(
-      'mongodb://localhost:27017/gobarber',
+      MONGO_URL,
       {
         useNewUrlParser: true,
         useFindAndModify: false,
