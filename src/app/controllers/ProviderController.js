@@ -1,7 +1,7 @@
 import { User } from '../models/User'
 import { File } from '../models/File'
 
-export class ProviderController {
+class ProviderController {
   async index (req, res) {
     const providers = await User.findAll({
       where: { provider: true },
@@ -18,3 +18,5 @@ export class ProviderController {
     return res.json(providers)
   }
 }
+
+export default new ProviderController()

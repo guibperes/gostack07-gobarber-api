@@ -1,14 +1,14 @@
 import Bee from 'bee-queue'
 
 import { RedisConfig } from '../config/redis'
-import { CancellationMail } from '../app/jobs/CancellationMail'
+import CancellationMail from '../app/jobs/CancellationMail'
 
-export class Queue {
+class Queue {
   constructor () {
     this.queues = {}
 
     this.jobs = [
-      new CancellationMail()
+      CancellationMail
     ]
 
     this.init()
@@ -37,3 +37,5 @@ export class Queue {
     })
   }
 }
+
+export default new Queue()

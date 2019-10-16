@@ -3,44 +3,36 @@ import { Router } from 'express'
 import { auth } from './middlewares/auth'
 import { notFounded } from './middlewares/notFounded'
 import { upload } from './config/storage'
-import { UserController } from './app/controllers/UserController'
-import { SessionController } from './app/controllers/SessionController'
-import { FileController } from './app/controllers/FileController'
-import { ProviderController } from './app/controllers/ProviderController'
-import { AppointmentController } from './app/controllers/AppointmentController'
-import { ScheduleController } from './app/controllers/ScheduleController'
-import { NotificationController } from './app/controllers/NotificationController'
+import UserController from './app/controllers/UserController'
+import SessionController from './app/controllers/SessionController'
+import FileController from './app/controllers/FileController'
+import ProviderController from './app/controllers/ProviderController'
+import AppointmentController from './app/controllers/AppointmentController'
+import ScheduleController from './app/controllers/ScheduleController'
+import NotificationController from './app/controllers/NotificationController'
 
 const routes = new Router()
 
-const userController = new UserController()
-const sessionController = new SessionController()
-const fileController = new FileController()
-const providerController = new ProviderController()
-const appointmentController = new AppointmentController()
-const scheduleController = new ScheduleController()
-const notificationController = new NotificationController()
-
 // PUBLIC ROUTES
-routes.post('/users', userController.store)
-routes.post('/sessions', sessionController.store)
+routes.post('/users', UserController.store)
+routes.post('/sessions', SessionController.store)
 
 // PRIVATE ROUTES
 routes.use(auth)
-routes.put('/users', userController.update)
+routes.put('/users', UserController.update)
 
-routes.post('/files', upload.single('file'), fileController.store)
+routes.post('/files', upload.single('file'), FileController.store)
 
-routes.get('/providers', providerController.index)
+routes.get('/providers', ProviderController.index)
 
-routes.post('/appointments', appointmentController.store)
-routes.get('/appointments', appointmentController.index)
-routes.delete('/appointments/:id', appointmentController.delete)
+routes.post('/appointments', AppointmentController.store)
+routes.get('/appointments', AppointmentController.index)
+routes.delete('/appointments/:id', AppointmentController.delete)
 
-routes.get('/schedules', scheduleController.index)
+routes.get('/schedules', ScheduleController.index)
 
-routes.get('/notifications', notificationController.index)
-routes.put('/notifications/:id', notificationController.update)
+routes.get('/notifications', NotificationController.index)
+routes.put('/notifications/:id', NotificationController.update)
 
 routes.use('*', notFounded)
 

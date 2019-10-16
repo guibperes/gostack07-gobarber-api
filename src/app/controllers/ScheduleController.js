@@ -5,7 +5,7 @@ import { Appointment } from '../models/Appointment'
 import { User } from '../models/User'
 import { File } from '../models/File'
 
-export class ScheduleController {
+class ScheduleController {
   async index (req, res) {
     const { date } = req.query
 
@@ -48,3 +48,5 @@ export class ScheduleController {
     return res.json(appointments)
   }
 }
+
+export default new ScheduleController()

@@ -2,17 +2,14 @@ import * as Yup from 'yup'
 import { startOfHour, parseISO, isBefore, format, subHours } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 
-import { Queue } from '../../lib/queue'
+import Queue from '../../lib/Queue'
 import { Appointment } from '../models/Appointment'
 import { User } from '../models/User'
 import { File } from '../models/File'
 import { Notification } from '../schemas/Notification'
-import { CancellationMail } from '../jobs/CancellationMail'
+import CancellationMail from '../jobs/CancellationMail'
 
-const queue = new Queue()
-const cancellationMail = new CancellationMail()
-
-export class AppointmentController {
+class AppointmentController {
   async store (req, res) {
     const schema = Yup.object().shape({
       provider_id: Yup.number().required(),
@@ -155,7 +152,7 @@ export class AppointmentController {
 
     const { user, provider, date } = appointment
 
-    await queue.add(cancellationMail.key, {
+    await Queue.add(CancellationMail.key, {
       user,
       provider,
       date
@@ -166,3 +163,5 @@ export class AppointmentController {
     return res.json(appointment)
   }
 }
+
+export default new AppointmentController()

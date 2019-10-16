@@ -1,11 +1,9 @@
 import { parseISO, format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 
-import { Mail } from '../../lib/Mail'
+import Mail from '../../lib/Mail'
 
-const mail = new Mail()
-
-export class CancellationMail {
+class CancellationMail {
   get key () {
     return 'CancellationMail'
   }
@@ -13,7 +11,9 @@ export class CancellationMail {
   async handle ({ data }) {
     const { provider, user, date } = data
 
-    await mail.sendMail({
+    console.log(`[INFO] CancellationMail Job is running for email: ${provider.email}`)
+
+    await Mail.sendMail({
       to: `${provider.name} <${provider.email}>`,
       subject: 'Agendamento Cancelado',
       template: 'cancellation',
@@ -27,5 +27,9 @@ export class CancellationMail {
         )
       }
     })
+
+    console.log(`[INFO] CancellationMail Job has ended for email: ${provider.email}`)
   }
 }
+
+export default new CancellationMail()

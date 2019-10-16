@@ -1,5 +1,4 @@
-import { Queue } from './lib/queue'
+import Queue from './lib/Queue'
 
-const queue = new Queue()
-
-queue.processQueue()
+console.log('[INFO] Queue Worker Started')
+Queue.processQueue()

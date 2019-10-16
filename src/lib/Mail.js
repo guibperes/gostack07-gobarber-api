@@ -5,7 +5,7 @@ import nodemailerhbs from 'nodemailer-express-handlebars'
 
 import { MailConfig } from '../config/mail'
 
-export class Mail {
+class Mail {
   constructor () {
     const { host, port, secure, auth } = MailConfig
 
@@ -41,3 +41,5 @@ export class Mail {
     })
   }
 }
+
+export default new Mail()

@@ -1,7 +1,7 @@
 import { User } from '../models/User'
 import { Notification } from '../schemas/Notification'
 
-export class NotificationController {
+class NotificationController {
   async index (req, res) {
     const isProvider = await User.findOne({
       where: { id: req.user, provider: true }
@@ -33,3 +33,5 @@ export class NotificationController {
     return res.json(notification)
   }
 }
+
+export default new NotificationController()
