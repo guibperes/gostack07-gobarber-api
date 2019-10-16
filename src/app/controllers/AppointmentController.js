@@ -118,9 +118,20 @@ export class AppointmentController {
           model: User,
           as: 'provider',
           attributes: ['name', 'email']
+        },
+        {
+          model: User,
+          as: 'user',
+          attributes: ['name']
         }
       ]
     })
+
+    if (appointment.canceled_at !== null) {
+      return res.status(401).json({
+        message: 'This appointment is already canceled'
+      })
+    }
 
     if (appointment.user_id !== req.user) {
       return res.status(401).json({
@@ -140,14 +151,23 @@ export class AppointmentController {
 
     await appointment.save()
 
-    const { name, email } = appointment.provider
+    const { provider, user, date } = appointment
 
     const mail = new Mail()
 
     await mail.sendMail({
-      to: `${name} <${email}>`,
+      to: `${provider.name} <${provider.email}>`,
       subject: 'Agendamento Cancelado',
-      text: 'Você tem um novo cancelamento'
+      template: 'cancellation',
+      context: {
+        provider: provider.name,
+        user: user.name,
+        date: format(
+          date,
+          "'Dia' dd 'de' MMMM à's' H:mm'h'",
+          { locale: ptBR }
+        )
+      }
     })
 
     return res.json(appointment)
