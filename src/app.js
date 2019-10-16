@@ -5,9 +5,10 @@ import morgan from 'morgan'
 import * as Sentry from '@sentry/node'
 import Youch from 'youch'
 
+import config from './config/env'
+import { SentryConfig } from './config/sentry'
 import { Database } from './database'
 import routes from './routes'
-import { SentryConfig } from './config/sentry'
 
 class App {
   constructor () {
