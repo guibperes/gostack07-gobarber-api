@@ -11,3 +11,7 @@ services:
     ports:
       - "27017:27017"
     image: mongo
+  redis:
+    ports:
+      - "6379:6379"
+    image: redis:alpine
