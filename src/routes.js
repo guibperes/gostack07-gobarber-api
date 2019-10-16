@@ -1,7 +1,6 @@
 import { Router } from 'express'
 
 import { auth } from './middlewares/auth'
-import { notFounded } from './middlewares/notFounded'
 import { upload } from './config/storage'
 import UserController from './app/controllers/UserController'
 import SessionController from './app/controllers/SessionController'
@@ -35,7 +34,5 @@ routes.get('/schedules', ScheduleController.index)
 
 routes.get('/notifications', NotificationController.index)
 routes.put('/notifications/:id', NotificationController.update)
-
-routes.use('*', notFounded)
 
 export default routes
