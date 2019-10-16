@@ -33,8 +33,19 @@ class Queue {
     this.jobs.map(job => {
       const { bee, handle } = this.queues[job.key]
 
-      bee.process(handle)
+      bee
+        .on('succeeded', this.handleSucceeded)
+        .on('failed', this.handleFailure)
+        .process(handle)
     })
+  }
+
+  handleSucceeded (job) {
+    console.log(`[SUCCESS] Job process ${job.queue.name} has succeeded`)
+  }
+
+  handleFailure (job, err) {
+    console.log(`[FAILED] Job process ${job.queue.name} has failed`, err)
   }
 }
 
